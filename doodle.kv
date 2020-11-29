@@ -12,8 +12,11 @@
         id: doodle_id
         size: 75, 75
         doodle_img: doodle_img_id
+        jump_sound_src: 'sounds/jump.mp3'
+        jump_right_img_src: 'img/doodle-right.png' 
+        jump_left_img_src: 'img/doodle-left.png' 
         Image:
             id: doodle_img_id
             pos: self.pos
             size: 75, 75
-            source: 'img/doodle.png'
+            source: doodle_id.jump_right_img_src

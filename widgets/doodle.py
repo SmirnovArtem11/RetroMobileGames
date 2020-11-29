@@ -3,23 +3,28 @@ kivy.require('1.10.1')
 
 from kivy.uix.widget import Widget
 from kivy.properties import ObjectProperty
+from kivy.properties import StringProperty
 from kivy.animation import Animation
 from kivy.core.window import Window
 from kivy.core.audio import SoundLoader
 
 class Doodle(Widget):
     doodle_img = ObjectProperty(None)
-    jump_sound_src = 'sounds/jump.mp3'
-    
-    jump_sound = SoundLoader.load(jump_sound_src)
+    jump_sound_src = StringProperty()
+    jump_right_img_src = StringProperty()
+    jump_left_img_src = StringProperty()
     
     def move_right(self):
+        self.doodle_img.source = self.jump_right_img_src
+        
         duration = 0.8 * (Window.size[0] - self.pos[0]) / Window.size[0]
         anim = Animation(x = Window.size[0], t='in_quad', d=duration)
         anim.start(self)
         anim.start(self.doodle_img)
     
     def move_left(self):
+        self.doodle_img.source = self.jump_left_img_src
+        
         duration = 0.8 * self.pos[0] / Window.size[0]
         anim = Animation(x = -self.width, t='linear', d=duration)
         anim.start(self)
@@ -30,8 +35,9 @@ class Doodle(Widget):
         Animation.stop_all(self.doodle_img, 'x')
     
     def jump(self):
-        if self.jump_sound:
-            self.jump_sound.play()
+        if self.jump_sound_src:
+            jump_sound = SoundLoader.load(self.jump_sound_src)
+            jump_sound.play()
             
         self.pos[1] = self.pos[1] + 0.1 
         
