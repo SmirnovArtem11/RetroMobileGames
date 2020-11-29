@@ -8,14 +8,12 @@ from kivy.config import Config
 from widgets.playground import Playground
 from widgets.doodle import Doodle
 
-
+Config.set('graphics', 'resizable', '0')
+Config.set('graphics', 'width', '414')
+Config.set('graphics', 'height', '736')
 
 class DoodleApp(App):
     def build(self):
-        Config.set('graphics', 'resizable', '0')
-        Config.set('graphics', 'width', '414')
-        Config.set('graphics', 'height', '736')
-        
         playground = Playground()
         playground.start()
         return playground
