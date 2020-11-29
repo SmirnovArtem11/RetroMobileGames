@@ -11,6 +11,7 @@ class Playground(Widget):
     
     def start(self):
         Clock.schedule_interval(self.doodle.update, 0.001)
+        self.doodle.jump()
         print("aaaaaaaaaa, I'm alive!!!")
     
     def on_touch_down(self, touch):

@@ -10,13 +10,13 @@ class Doodle(Widget):
     doodle_img = ObjectProperty(None)
     
     def move_right(self):
-        duration = 0.4 * (Window.size[0] - self.pos[0]) / Window.size[0]
-        anim = Animation(x = Window.size[0], t='linear', d=duration)
+        duration = 0.8 * (Window.size[0] - self.pos[0]) / Window.size[0]
+        anim = Animation(x = Window.size[0], t='in_quad', d=duration)
         anim.start(self)
         anim.start(self.doodle_img)
     
     def move_left(self):
-        duration = 0.4 * self.pos[0] / Window.size[0]
+        duration = 0.8 * self.pos[0] / Window.size[0]
         anim = Animation(x = -self.width, t='linear', d=duration)
         anim.start(self)
         anim.start(self.doodle_img)
@@ -24,6 +24,19 @@ class Doodle(Widget):
     def move_stop(self):
         Animation.stop_all(self, 'x')
         Animation.stop_all(self.doodle_img, 'x')
+    
+    def jump(self):
+        self.pos[1] = self.pos[1] + 0.1 
+        anim = Animation(y = self.y + self.height * 3, t='out_quad', d=0.4)
+        anim.bind(on_complete=self.fall)
+        anim.start(self)
+        anim.start(self.doodle_img)
+    
+    def fall(self, *args):
+        duration = 0.4/3 * self.pos[1] / self.height
+        anim = Animation(y = 0, t='in_quad', d=duration)
+        anim.start(self)
+        anim.start(self.doodle_img)
     
     def update(self, *args):
         if self.pos[0] >= Window.size[0] - self.width/2:
@@ -38,4 +51,7 @@ class Doodle(Widget):
             
             self.move_stop()
             self.move_left()
+        
+        if self.pos[1] <= 0: 
+            self.jump()
     
