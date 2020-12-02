@@ -7,12 +7,17 @@ from kivy.properties import StringProperty
 from kivy.animation import Animation
 from kivy.core.window import Window
 from kivy.core.audio import SoundLoader
+from kivy.clock import Clock
 
 class Doodle(Widget):
     doodle_img = ObjectProperty(None)
     jump_sound_src = StringProperty()
     jump_right_img_src = StringProperty()
     jump_left_img_src = StringProperty()
+    
+    def start(self):
+        Clock.schedule_interval(self.update, 0.001)
+        self.jump()
     
     def move_right(self):
         self.doodle_img.source = self.jump_right_img_src
@@ -57,13 +62,11 @@ class Doodle(Widget):
             self.pos[0] = -self.width/2 + 1
             self.doodle_img.pos[0] = -self.width/2 + 1
             
-            self.move_stop()
             self.move_right()
         elif self.pos[0] <= -self.width/2:
             self.pos[0] = Window.size[0] - self.width/2 - 1
             self.doodle_img.pos[0] = Window.size[0] - self.width/2 - 1
             
-            self.move_stop()
             self.move_left()
         
         if self.pos[1] <= 0: 

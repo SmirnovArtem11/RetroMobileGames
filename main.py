@@ -7,8 +7,7 @@ from kivy.config import Config
 
 from widgets.playground import Playground
 from widgets.doodle import Doodle
-
-
+from widgets.platform_fabrica import PlatformFabrica
 
 class DoodleApp(App):
     def build(self):   

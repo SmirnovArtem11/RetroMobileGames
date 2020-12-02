@@ -2,17 +2,15 @@ import kivy
 kivy.require('1.10.1')
 
 from kivy.uix.widget import Widget
-from kivy.vector import Vector
 from kivy.properties import ObjectProperty
-from kivy.clock import Clock
 
 class Playground(Widget):
     doodle = ObjectProperty(None)
+    platforms = ObjectProperty(None)
     
     def start(self):
-        Clock.schedule_interval(self.doodle.update, 0.001)
-        self.doodle.jump()
-        print("aaaaaaaaaa, I'm alive!!!")
+        self.doodle.start()
+        self.platforms.start()
     
     def on_touch_down(self, touch):
         x_pos = touch.spos[0]
