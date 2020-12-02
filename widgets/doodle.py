@@ -22,22 +22,36 @@ class Doodle(Widget):
     def move_right(self):
         self.doodle_img.source = self.jump_right_img_src
         
-        duration = 0.8 * (Window.size[0] - self.pos[0]) / Window.size[0]
-        anim = Animation(x = Window.size[0], t='in_quad', d=duration)
+        duration = 0.8 * (Window.size[0] - self.width/4 - self.pos[0]) / (Window.size[0] + self.width/2)
+        anim = Animation(x = Window.size[0] - self.width/4, t='in_quad', d=duration)
+        anim.bind(on_complete=self.continue_move_right)
         anim.start(self)
         anim.start(self.doodle_img)
+    
+    def continue_move_right(self, anim, obj_to_anim):
+        if(isinstance(obj_to_anim, Doodle)):
+            self.pos[0] = -self.width*3/4 + 1
+            self.doodle_img.pos[0] = -self.width*3/4 + 1
+            self.move_right()
     
     def move_left(self):
         self.doodle_img.source = self.jump_left_img_src
         
-        duration = 0.8 * self.pos[0] / Window.size[0]
-        anim = Animation(x = -self.width, t='linear', d=duration)
+        duration = 0.8 * abs(-self.width*3/4 - self.pos[0]) / (Window.size[0] + self.width/2)
+        anim = Animation(x = -self.width*3/4, t='linear', d=duration)
+        anim.bind(on_complete=self.continue_move_left)
         anim.start(self)
         anim.start(self.doodle_img)
     
+    def continue_move_left(self, anim, obj_to_anim):
+        if(isinstance(obj_to_anim, Doodle)):
+            self.pos[0] = Window.size[0] - self.width/4 - 1
+            self.doodle_img.pos[0] = Window.size[0] - self.width/4 - 1
+            self.move_left()
+    
     def move_stop(self):
-        Animation.stop_all(self, 'x')
-        Animation.stop_all(self.doodle_img, 'x')
+        Animation.cancel_all(self, 'x')
+        Animation.cancel_all(self.doodle_img, 'x')
     
     def jump(self):
         if self.jump_sound_src:
@@ -58,17 +72,6 @@ class Doodle(Widget):
         anim.start(self.doodle_img)
     
     def update(self, *args):
-        if self.pos[0] >= Window.size[0] - self.width/2:
-            self.pos[0] = -self.width/2 + 1
-            self.doodle_img.pos[0] = -self.width/2 + 1
-            
-            self.move_right()
-        elif self.pos[0] <= -self.width/2:
-            self.pos[0] = Window.size[0] - self.width/2 - 1
-            self.doodle_img.pos[0] = Window.size[0] - self.width/2 - 1
-            
-            self.move_left()
-        
         if self.pos[1] <= 0: 
             self.jump()
     
