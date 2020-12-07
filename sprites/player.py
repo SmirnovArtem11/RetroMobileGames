@@ -20,10 +20,18 @@ class Player(pygame.sprite.Sprite):
     pygame.sprite.Sprite.__init__(self)
     self.image = doodle_right_img
     self.rect = self.image.get_rect()
-    self.rect.center = (WIDTH / 2, HEIGHT / 2)
-  
+    self.size = self.image.get_size()
+    self.width = self.size[0] 
+    self.height = self.size[1] 
+    self.rect.centerx = WIDTH / 2
+    self.rect.bottom = HEIGHT
+    self.speedx = 0;
   
   def update(self):
-    self.rect.x += 5
-    if self.rect.left > WIDTH:
-      self.rect.right = 0
+    self.rect.x += self.speedx
+    
+    if self.rect.left > (WIDTH - self.width/4):
+      self.rect.left = -self.width*3/4
+    
+    if self.rect.left < (-self.width*3/4) :
+      self.rect.left = WIDTH - self.width/4
