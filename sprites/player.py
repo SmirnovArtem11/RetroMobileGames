@@ -7,7 +7,8 @@ HEIGHT = 736
 game_folder = os.path.dirname(__file__)
 game_folder = os.path.normpath(game_folder + os.sep + os.pardir)
 img_folder = os.path.join(game_folder, 'img')
-doodle_right_img = pygame.image.load(os.path.join(img_folder, 'doodle_right.png'))
+
+doodle_right_img = pygame.transform.scale(pygame.image.load(os.path.join(img_folder, 'doodle_right.png')), (WIDTH/6, HEIGHT/12.5))
 
 class Player(pygame.sprite.Sprite):
   def __init__(self):
