@@ -8,7 +8,6 @@ from img.images import *
 from sprites.player import Player
 
 pygame.init()
-pygame.mixer.init()
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Doodle Jump")
 clock = pygame.time.Clock()

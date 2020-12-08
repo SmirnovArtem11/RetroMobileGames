@@ -5,6 +5,8 @@ from settings import *
 
 from img.images import *
 
+from sound.sounds import *
+
 class Player(pygame.sprite.Sprite):
   def __init__(self):
     pygame.sprite.Sprite.__init__(self)
@@ -60,8 +62,11 @@ class Player(pygame.sprite.Sprite):
       self.rect.left = WIDTH - self.width/4
 
   def start_jump(self):
+    
     self.speed_y = self.default_speed_y
-
+    
+    jump_sound.play()
+    
     self.is_squezing = True
     
     if self.is_right:
