@@ -2,10 +2,10 @@ import pygame
 import os
 
 from settings import *
-
 from img.images import *
 
 from sprites.player import Player
+from sprites.platforms import Platforms
 
 pygame.init()
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
@@ -13,9 +13,15 @@ pygame.display.set_caption("Doodle Jump")
 clock = pygame.time.Clock()
 
 all_sprites = pygame.sprite.Group()
+
 player = Player()
 all_sprites.add(player)
 
+platforms = Platforms()
+
+for platform in platforms.platforms:
+  all_sprites.add(platform)
+  
 running = True
 
 while running:

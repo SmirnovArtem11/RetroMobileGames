@@ -2,9 +2,7 @@ import pygame
 import os
 
 from settings import *
-
 from img.images import *
-
 from sound.sounds import *
 
 class Player(pygame.sprite.Sprite):
