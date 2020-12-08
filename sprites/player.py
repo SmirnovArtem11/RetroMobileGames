@@ -1,13 +1,6 @@
 import pygame
-import os
 
-WIDTH = 414
-HEIGHT = 736
-FPS = 60
-
-game_folder = os.path.dirname(__file__)
-game_folder = os.path.normpath(game_folder + os.sep + os.pardir)
-img_folder = os.path.join(game_folder, 'img')
+from settings import *
 
 doodle_right_img = pygame.transform.scale(
   pygame.image.load(
