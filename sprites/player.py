@@ -28,6 +28,7 @@ class Player(pygame.sprite.Sprite):
     self.gravity = ((3*self.height - self.default_speed_y*FPS/2)*2)/((FPS/2)**2)
     self.is_squezing = False
     self.is_falling = False
+    self.is_stop = False
   
   def update(self):
     self.move_x()
@@ -84,12 +85,13 @@ class Player(pygame.sprite.Sprite):
       self.image = doodle_left_img
   
   def jump(self): 
-    self.rect.bottom -= self.speed_y
-    self.speed_y = self.speed_y + self.gravity
-    
-    if self.rect.bottom >= HEIGHT: 
-      self.start_jump()
-    
-    if self.speed_y < 0:
-      self.is_falling = True
+    if not self.is_stop:
+      self.rect.bottom -= self.speed_y
+      self.speed_y = self.speed_y + self.gravity
+
+      if self.rect.bottom >= HEIGHT: 
+        self.start_jump()
+
+      if self.speed_y <= 0:
+        self.is_falling = True
   

@@ -44,7 +44,6 @@ while running:
     if event.type == JUMPEVENT:
       player.un_squeeze()
   
-  
   all_sprites.update()
   
   screen.blit(bg, (0, 0))
