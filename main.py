@@ -3,9 +3,9 @@ import os
 
 from settings import *
 
-from sprites.player import Player
+from img.images import *
 
-bg = pygame.image.load(os.path.join(img_folder, 'background.png'))
+from sprites.player import Player
 
 pygame.init()
 pygame.mixer.init()
@@ -25,16 +25,19 @@ while running:
   for event in pygame.event.get():
     if event.type == pygame.QUIT:
       running = False
-      
-    if event.type == pygame.KEYDOWN:
-      if event.key == pygame.K_LEFT:
-        player.speed_x = -8
-      if event.key == pygame.K_RIGHT:
-        player.speed_x = 8
     
     if event.type == pygame.KEYUP:
       if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
-        player.speed_x = 0
+        player.start_move_x(0)
+      
+    if event.type == pygame.KEYDOWN:
+      if event.key == pygame.K_LEFT:
+        player.start_move_x(-player.default_speed_x)
+      if event.key == pygame.K_RIGHT:
+        player.start_move_x(player.default_speed_x)
+    
+    if event.type == JUMPEVENT:
+      player.un_squeeze()
   
   
   all_sprites.update()

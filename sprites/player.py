@@ -1,13 +1,9 @@
 import pygame
+import os
 
 from settings import *
 
-doodle_right_img = pygame.transform.scale(
-  pygame.image.load(
-    os.path.join(img_folder, 'doodle_right.png')
-    ), 
-  (int(WIDTH/6), int(HEIGHT/12.5))
-  )
+from img.images import *
 
 class Player(pygame.sprite.Sprite):
   def __init__(self):
@@ -23,15 +19,36 @@ class Player(pygame.sprite.Sprite):
     self.rect.centerx = WIDTH / 2
     self.rect.bottom = HEIGHT
     
+    self.default_speed_x = 8;
     self.speed_x = 0;
+    self.is_right = True
     
-    self.max_speed_y = 10
+    self.default_speed_y = 10
     self.speed_y = 10
-    self.gravity = ((3*self.height - self.max_speed_y*FPS/2)*2)/((FPS/2)**2)
+    self.gravity = ((3*self.height - self.default_speed_y*FPS/2)*2)/((FPS/2)**2)
+    self.is_squezing = False
   
   def update(self):
     self.move_x()
     self.jump()
+  
+  def start_move_x(self, speed):
+    self.speed_x = speed
+    
+    if self.is_squezing:
+      if speed > 0:
+        self.image = doodle_squeeze_right_img
+        self.is_right = True
+      elif speed < 0:
+        self.image = doodle_squeeze_left_img
+        self.is_right = False
+    else:
+      if speed < 0:
+        self.image = doodle_left_img
+        self.is_right = False
+      elif speed > 0:
+        self.image = doodle_right_img
+        self.is_right = True
   
   def move_x(self):
     self.rect.x += self.speed_x
@@ -41,11 +58,31 @@ class Player(pygame.sprite.Sprite):
     
     if self.rect.left < (-self.width*3/4) :
       self.rect.left = WIDTH - self.width/4
+
+  def start_jump(self):
+    self.speed_y = self.default_speed_y
+
+    self.is_squezing = True
+    
+    if self.is_right:
+      self.image = doodle_squeeze_right_img
+    else:
+      self.image = doodle_squeeze_left_img
+    
+    pygame.time.set_timer(JUMPEVENT, 200, True)
+  
+  def un_squeeze(self):
+    self.is_squezing = False
+    
+    if self.is_right:
+      self.image = doodle_right_img
+    else:
+      self.image = doodle_left_img
   
   def jump(self): 
     self.rect.bottom -= self.speed_y
     self.speed_y = self.speed_y + self.gravity
     
     if self.rect.bottom >= HEIGHT: 
-      self.speed_y = self.max_speed_y
+      self.start_jump()
   
