@@ -34,13 +34,13 @@ while running:
       
     if event.type == pygame.KEYDOWN:
       if event.key == pygame.K_LEFT:
-        player.speedx = -8
+        player.speed_x = -8
       if event.key == pygame.K_RIGHT:
-        player.speedx = 8
+        player.speed_x = 8
     
     if event.type == pygame.KEYUP:
       if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
-        player.speedx = 0
+        player.speed_x = 0
   
   
   all_sprites.update()
