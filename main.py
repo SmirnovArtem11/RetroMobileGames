@@ -17,7 +17,7 @@ all_sprites = pygame.sprite.Group()
 player = Player()
 all_sprites.add(player)
 
-platforms = Platforms()
+platforms = Platforms(player)
 
 for platform in platforms.platforms:
   all_sprites.add(platform)
