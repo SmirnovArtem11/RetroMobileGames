@@ -1,5 +1,5 @@
 import pygame
-import os
+import random
 
 from settings import *
 from img.images import *
@@ -9,7 +9,7 @@ class Platform(pygame.sprite.Sprite):
     pygame.sprite.Sprite.__init__(self)
     self.image = platform_img
     self.rect = self.image.get_rect()
-    self.rect.centerx = x
+    self.rect.left = x
     self.rect.top = y
     
     self.player = player
@@ -54,7 +54,12 @@ class Platforms(pygame.sprite.Sprite):
     lowestPlatform = Platform(-500, HEIGHT-10, player)
     self.platforms.append(lowestPlatform)
     
-    for y in range (HEIGHT - 150, -2*HEIGHT, -150):
-      platform = Platform(WIDTH/2, y, player)
+    current_h = HEIGHT
+    for i in range (1000):
+      x = random.randint(0, int(4/5*WIDTH))
+      y = current_h - random.randint(35, player.rect.height*3)
+      current_h = y
+      
+      platform = Platform(x, y, player)
       self.platforms.append(platform)
     
