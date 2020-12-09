@@ -10,7 +10,7 @@ class Platform(pygame.sprite.Sprite):
     self.image = platform_img
     self.rect = self.image.get_rect()
     self.rect.centerx = x
-    self.rect.bottom = y
+    self.rect.top = y
     
     self.player = player
     
@@ -19,7 +19,8 @@ class Platform(pygame.sprite.Sprite):
   
   def update(self): 
     if self.player.is_falling:
-      if self.player.rect.right > self.rect.left and self.player.rect.left < self.rect.right and self.player.rect.bottom > self.rect.top and self.player.rect.bottom < self.rect.centery:
+      #доделать
+      if len(pygame.sprite.spritecollide(self.player, [self], False)) and self.player.rect.right > self.rect.left and self.player.rect.left < self.rect.right and self.player.rect.bottom > self.rect.top and self.player.rect.bottom < self.rect.bottom:
         self.player.start_jump()
     
     if self.player.rect.top < HEIGHT/2 and not self.is_scrolling and not self.player.is_falling:
@@ -33,8 +34,6 @@ class Platform(pygame.sprite.Sprite):
     self.speed_y = self.player.speed_y
 
   def scroll(self):
-    print(self.player.rect.top)
-    print(HEIGHT/2)
     if self.is_scrolling:
       if self.speed_y <= 0:
         self.is_scrolling = False
@@ -52,6 +51,10 @@ class Platforms(pygame.sprite.Sprite):
     pygame.sprite.Sprite.__init__(self)
     self.platforms = []
     
+    lowestPlatform = Platform(-500, HEIGHT-10, player)
+    self.platforms.append(lowestPlatform)
+    
     for y in range (HEIGHT - 150, -2*HEIGHT, -150):
       platform = Platform(WIDTH/2, y, player)
       self.platforms.append(platform)
+    

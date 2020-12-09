@@ -1,5 +1,4 @@
 import pygame
-import os
 
 from settings import *
 from img.images import *

@@ -1,11 +1,11 @@
 import pygame
-import os
 
 from settings import *
 from img.images import *
 
 from sprites.player import Player
 from sprites.platforms import Platforms
+from sprites.score import Score
 
 pygame.init()
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
@@ -21,7 +21,9 @@ platforms = Platforms(player)
 
 for platform in platforms.platforms:
   all_sprites.add(platform)
-  
+
+score = Score(player, platforms.platforms[0])
+
 running = True
 
 while running:
@@ -48,6 +50,10 @@ while running:
   
   screen.blit(bg, (0, 0))
   all_sprites.draw(screen)
+  
+  text_surface, text_rect =score.update()
+  screen.blit(text_surface, text_rect)
+  
   pygame.display.flip()
 
 pygame.quit()
