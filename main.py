@@ -15,7 +15,6 @@ clock = pygame.time.Clock()
 all_sprites = pygame.sprite.Group()
 
 player = Player()
-all_sprites.add(player)
 
 platforms = Platforms(player)
 
@@ -23,6 +22,9 @@ for platform in platforms.platforms:
   all_sprites.add(platform)
 
 score = Score(player, platforms.platforms[0])
+all_sprites.add(score)
+
+all_sprites.add(player)
 
 running = True
 
@@ -51,7 +53,7 @@ while running:
   screen.blit(bg, (0, 0))
   all_sprites.draw(screen)
   
-  text_surface, text_rect =score.update()
+  text_surface, text_rect = score.print_score()
   screen.blit(text_surface, text_rect)
   
   pygame.display.flip()

@@ -33,6 +33,13 @@ doodle_squeeze_left_img = pygame.transform.scale(
 
 bg = pygame.image.load(os.path.join(img_folder, 'background.png'))
 
+top_score_img = pygame.transform.scale(
+  pygame.image.load(
+    os.path.join(img_folder, 'top_score.png')
+  ),
+  (WIDTH, int(WIDTH*92/639))
+)
+
 platform_img = pygame.transform.scale(
   pygame.image.load(
     os.path.join(img_folder, 'platform_green.png')
