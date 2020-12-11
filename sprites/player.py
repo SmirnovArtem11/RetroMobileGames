@@ -24,14 +24,28 @@ class Player(pygame.sprite.Sprite):
     
     self.default_speed_y = 10
     self.speed_y = 10
-    self.gravity = ((3*self.height - self.default_speed_y*FPS/2)*2)/((FPS/2)**2)
+    self.gravity = ((3*self.height - self.default_speed_y*FPS/3*2)*2)/((FPS/3*2)**2)
     self.is_squezing = False
     self.is_falling = False
     self.is_stop = False
+    
+    self.is_loose = False
+    self.is_scrolling_up = False
   
   def update(self):
     self.move_x()
-    self.jump()
+    
+    if not self.is_stop and not self.is_loose:
+      self.jump()
+      
+    if self.rect.bottom > HEIGHT and not self.is_loose:
+      self.end_game()
+    
+    if self.is_loose:
+      if self.is_scrolling_up:
+        self.scroll_up()
+      else: 
+        self.fall()
   
   def start_move_x(self, speed):
     self.speed_x = speed
@@ -84,13 +98,26 @@ class Player(pygame.sprite.Sprite):
       self.image = doodle_left_img
   
   def jump(self): 
-    if not self.is_stop:
-      self.rect.bottom -= self.speed_y
-      self.speed_y = self.speed_y + self.gravity
+    self.rect.bottom -= self.speed_y
+    self.speed_y = self.speed_y + self.gravity
 
-      if self.rect.bottom >= HEIGHT: 
-        self.start_jump()
-
-      if self.speed_y <= 0:
-        self.is_falling = True
+    if self.speed_y <= 0:
+      self.is_falling = True
   
+  def scroll_up(self):
+    if self.rect.top > HEIGHT/2:
+      self.rect.bottom -= self.speed_y
+      self.speed_y = self.speed_y + abs(self.gravity)/4
+    else:
+      self.is_scrolling_up = False
+      self.speed_y = 0
+  
+  def fall(self):
+    self.rect.bottom -= self.speed_y
+    self.speed_y = self.speed_y + self.gravity
+  
+  def end_game(self):
+    self.is_loose = True
+    self.is_scrolling_up = True
+    self.speed_y = abs(self.speed_y)/2
+    loose_sound.play()

@@ -1,48 +1,85 @@
 import pygame
 import os
+from PIL import Image
 
 from settings import *
+
+doodle_right_size = Image.open(os.path.join(img_folder, 'doodle_right.png')).size
 
 doodle_right_img = pygame.transform.scale(
   pygame.image.load(
     os.path.join(img_folder, 'doodle_right.png')
     ), 
-  (int(WIDTH/6), int(WIDTH/6/744*670))
+  (int(WIDTH/7), int(WIDTH/7/doodle_right_size[0]*doodle_right_size[1]))
   )
+
+
+doodle_left_size = Image.open(os.path.join(img_folder, 'doodle_left.png')).size
 
 doodle_left_img = pygame.transform.scale(
   pygame.image.load(
     os.path.join(img_folder, 'doodle_left.png')
     ), 
-  (int(WIDTH/6), int(WIDTH/6/744*670))
+  (int(WIDTH/7), int(WIDTH/7/doodle_left_size[0]*doodle_left_size[1]))
   )
+
+
+doodle_squeeze_right_size = Image.open(os.path.join(img_folder, 'doodle_squeeze_right.png')).size
 
 doodle_squeeze_right_img = pygame.transform.scale(
   pygame.image.load(
     os.path.join(img_folder, 'doodle_squeeze_right.png')
     ), 
-  (int(WIDTH/6), int(WIDTH/6/92*83))
+  (int(WIDTH/7), int(WIDTH/7/doodle_squeeze_right_size[0]*doodle_squeeze_right_size[1]))
   )
+
+
+doodle_squeeze_left_size = Image.open(os.path.join(img_folder, 'doodle_squeeze_left.png')).size
 
 doodle_squeeze_left_img = pygame.transform.scale(
   pygame.image.load(
     os.path.join(img_folder, 'doodle_squeeze_left.png')
     ), 
-  (int(WIDTH/6), int(WIDTH/6/92*83))
+  (int(WIDTH/7), int(WIDTH/7/doodle_squeeze_left_size[0]*doodle_squeeze_left_size[1]))
   )
 
-bg = pygame.image.load(os.path.join(img_folder, 'background.png'))
+
+(width, height) = Image.open(os.path.join(img_folder, 'background.png')).size
+bg_size = (int(int(1.5*HEIGHT)/height*width), int(1.5*HEIGHT))
+
+bg = pygame.transform.scale(
+  pygame.image.load(
+    os.path.join(img_folder, 'background.png')
+    ),
+  (bg_size[0], bg_size[1])
+  )
+
+
+ragged_bottom_size = Image.open(os.path.join(img_folder, 'ragged_bottom.png')).size
+
+ragged_bottom_img = pygame.transform.scale(
+  pygame.image.load(
+    os.path.join(img_folder, 'ragged_bottom.png')
+    ), 
+  (bg_size[0], int(bg_size[0]/ragged_bottom_size[0]*ragged_bottom_size[1]))
+)
+
+
+top_score_size = Image.open(os.path.join(img_folder, 'top_score.png')).size
 
 top_score_img = pygame.transform.scale(
   pygame.image.load(
     os.path.join(img_folder, 'top_score.png')
   ),
-  (WIDTH, int(WIDTH*92/639))
+  (int(WIDTH), int(int(WIDTH)/top_score_size[0]*top_score_size[1]))
 )
+
+
+platform_size = Image.open(os.path.join(img_folder, 'platform_green.png')).size
 
 platform_img = pygame.transform.scale(
   pygame.image.load(
     os.path.join(img_folder, 'platform_green.png')
     ), 
-  (int(WIDTH/5), 15)
-  )
+  (int(WIDTH/6), int(int(WIDTH/6)/platform_size[0]*platform_size[1]) + 3)
+)
