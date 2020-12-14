@@ -93,3 +93,21 @@ play_again_img = pygame.transform.scale(
     ), 
   (int(WIDTH/3), int(int(WIDTH/3)/play_again_size[0]*play_again_size[1]))
 )
+
+doodle_logo_size = Image.open(os.path.join(img_folder, 'doodle_logo.png')).size
+
+doodle_logo_img = pygame.transform.scale(
+  pygame.image.load(
+    os.path.join(img_folder, 'doodle_logo.png')
+    ), 
+  (int(WIDTH/4*3), int(int(WIDTH/4*3)/doodle_logo_size[0]*doodle_logo_size[1]))
+)
+
+play_size = Image.open(os.path.join(img_folder, 'play.png')).size
+
+play_img = pygame.transform.scale(
+  pygame.image.load(
+    os.path.join(img_folder, 'play.png')
+    ), 
+  (int(WIDTH/3), int(int(WIDTH/3)/play_size[0]*play_size[1]))
+)
