@@ -83,3 +83,13 @@ platform_img = pygame.transform.scale(
     ), 
   (int(WIDTH/6), int(int(WIDTH/6)/platform_size[0]*platform_size[1]) + 3)
 )
+
+
+play_again_size = Image.open(os.path.join(img_folder, 'play_again.png')).size
+
+play_again_img = pygame.transform.scale(
+  pygame.image.load(
+    os.path.join(img_folder, 'play_again.png')
+    ), 
+  (int(WIDTH/3), int(int(WIDTH/3)/play_again_size[0]*play_again_size[1]))
+)

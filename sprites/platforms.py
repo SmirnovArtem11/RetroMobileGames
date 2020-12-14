@@ -71,11 +71,12 @@ class Platforms(pygame.sprite.Sprite):
     
     self.is_loose = False
     
-    lowestPlatform = Platform(-500, HEIGHT-10, player)
+    lowestPlatform = Platform(-500, HEIGHT-platform_size[1], player)
     self.platforms.append(lowestPlatform)
+    self.new_platforms = []
     
     current_h = HEIGHT
-    for i in range (1000):
+    for i in range (50):
       x = random.randint(0, int(4/5*WIDTH))
       y = current_h - random.randint(35, player.rect.height*3)
       current_h = y
@@ -86,12 +87,48 @@ class Platforms(pygame.sprite.Sprite):
   def update(self):
     if self.player.is_loose and not self.is_loose:
       self.end_game()
+    
+    if not self.player.is_loose and self.is_loose:
+      self.play_again()
+
+    self.kill_platforms()
+  
+  def kill_platforms(self):
+    for platform in self.platforms[1:]:
+      if platform.rect.top > HEIGHT:
+        platform.kill()
   
   def end_game(self):
     self.is_loose = True
     
-    for platform in self.platforms:
-      if platform.rect.top > self.player.rect.bottom:
-        platform.rect.left = -500
-      else:
-        platform.end_game()
+    for platform in self.platforms[1:]:
+      platform.end_game()
+  
+  def play_again(self):
+    self.is_loose = False
+    
+    for platform in self.platforms[1:]:
+      platform.kill()
+    
+    self.platforms[0].rect.bottom = HEIGHT-platform_size[1]
+    self.platforms = [self.platforms[0]]
+    current_h = HEIGHT
+    for i in range (50):
+      x = random.randint(0, int(4/5*WIDTH))
+      y = current_h - random.randint(35, self.player.rect.height*3)
+      current_h = y
+      
+      platform = Platform(x, y, self.player)
+      self.platforms.append(platform)
+    
+    self.new_platforms = self.platforms[1:]
+    
+  def append_new_platforms(self, all_sprites):
+    if len(self.new_platforms) > 0:
+      all_sprites.remove(self.player)
+      for platform in self.new_platforms:
+        all_sprites.add(platform)
+      all_sprites.add(self.player)
+    
+    self.new_platforms = []
+    return all_sprites

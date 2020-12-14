@@ -107,10 +107,10 @@ class Player(pygame.sprite.Sprite):
   def scroll_up(self):
     if self.rect.top > HEIGHT/2:
       self.rect.bottom -= self.speed_y
-      self.speed_y = self.speed_y + abs(self.gravity)/4
+      self.speed_y = self.speed_y + abs(self.gravity)/5
     else:
       self.is_scrolling_up = False
-      self.speed_y = 0
+      self.speed_y = -5
   
   def fall(self):
     self.rect.bottom -= self.speed_y
@@ -121,3 +121,19 @@ class Player(pygame.sprite.Sprite):
     self.is_scrolling_up = True
     self.speed_y = abs(self.speed_y)/2
     loose_sound.play()
+  
+  def play_again(self):
+    self.rect.centerx = WIDTH / 2
+    self.rect.bottom = HEIGHT
+    
+    self.speed_x = 0;
+    self.is_right = True
+    
+    self.speed_y = 10
+    self.is_squezing = False
+    self.is_falling = False
+    self.is_stop = False
+    self.is_scrolling_up = False
+    
+    self.is_loose = False
+  

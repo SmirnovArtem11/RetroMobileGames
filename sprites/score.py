@@ -18,10 +18,17 @@ class Score(pygame.sprite.Sprite):
     self.max_distance = 0
     self.score = 0
     self.score_by_screen_height = 500
+    self.is_loose = False
   
   def update(self):
     if not self.player.is_loose:
       self.calc_score()
+    
+    if self.player.is_loose and not self.is_loose:
+      self.end_game()
+    
+    if not self.player.is_loose and self.is_loose:
+      self.play_again()
   
   def calc_score(self):
     distance = abs(self.player.rect.bottom - self.platform.rect.top)
@@ -36,3 +43,12 @@ class Score(pygame.sprite.Sprite):
     text_rect = text_surface.get_rect()
     text_rect.topleft = (20, -5)
     screen.blit(text_surface, text_rect)
+  
+  def end_game(self):
+    self.is_loose = True
+  
+  def play_again(self):
+    self.is_loose = False
+    
+    self.max_distance = 0
+    self.score = 0

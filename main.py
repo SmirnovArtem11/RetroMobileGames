@@ -46,8 +46,12 @@ def handle_events():
       if event.key == pygame.K_RIGHT:
         player.start_move_x(player.default_speed_x)
     
+    if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+      loose_screen.on_click(event.pos)
+    
     if event.type == JUMPEVENT:
       player.un_squeeze()
+
 
 def draw():
   screen.blit(bg, (0, 0))
@@ -58,11 +62,15 @@ def draw():
   
   pygame.display.flip()
 
+
 def update():
+  global all_sprites
+  
   all_sprites.update()
   platforms.update()
   loose_screen.update()
-
+  
+  all_sprites = platforms.append_new_platforms(all_sprites)
 
 while running:
   clock.tick(FPS)
