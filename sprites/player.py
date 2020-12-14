@@ -21,6 +21,8 @@ class Player(pygame.sprite.Sprite):
     self.default_speed_x = 8;
     self.speed_x = 0;
     self.is_right = True
+    self.acceleration_x = 0.3
+    self.is_accelerating_x = False
     
     self.default_speed_y = 10
     self.speed_y = 10
@@ -47,26 +49,34 @@ class Player(pygame.sprite.Sprite):
       else: 
         self.fall()
   
-  def start_move_x(self, speed):
-    self.speed_x = speed
+  def start_accelerating_x(self, is_right):
+    self.is_accelerating_x = True
     
     if self.is_squezing:
-      if speed > 0:
+      if is_right:
         self.image = doodle_squeeze_right_img
         self.is_right = True
-      elif speed < 0:
+      else:
         self.image = doodle_squeeze_left_img
         self.is_right = False
     else:
-      if speed < 0:
+      if not is_right:
         self.image = doodle_left_img
         self.is_right = False
-      elif speed > 0:
+      else:
         self.image = doodle_right_img
         self.is_right = True
   
+  def stop_accelerating_x(self):
+    self.is_accelerating_x = False
+  
   def move_x(self):
     self.rect.x += self.speed_x
+    
+    if self.is_right and self.is_accelerating_x:
+      self.speed_x += self.acceleration_x
+    elif not self.is_right and self.is_accelerating_x:
+      self.speed_x -= self.acceleration_x
     
     if self.rect.left > (WIDTH - self.width/4):
       self.rect.left = -self.width*3/4

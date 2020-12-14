@@ -38,13 +38,13 @@ def handle_events():
     
     if event.type == pygame.KEYUP:
       if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
-        player.start_move_x(0)
+        player.stop_accelerating_x()
       
     if event.type == pygame.KEYDOWN:
       if event.key == pygame.K_LEFT:
-        player.start_move_x(-player.default_speed_x)
+        player.start_accelerating_x(False)
       if event.key == pygame.K_RIGHT:
-        player.start_move_x(player.default_speed_x)
+        player.start_accelerating_x(True)
     
     if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
       loose_screen.on_click(event.pos)
