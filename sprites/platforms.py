@@ -3,6 +3,7 @@ import random
 
 from settings import *
 from img.images import *
+from sound.sounds import *
 
 class Platform(pygame.sprite.Sprite):
   def __init__(self, x, y, player):
@@ -17,10 +18,12 @@ class Platform(pygame.sprite.Sprite):
     self.speed_y = 0
     self.is_scrolling_down = False
     self.is_scrolling_up = False
+    
+    self.is_breakable = False
   
   def update(self): 
     if self.player.is_falling:
-      if len(pygame.sprite.spritecollide(self.player, [self], False)) and self.player.rect.right > self.rect.left and self.player.rect.left < self.rect.right and self.player.rect.bottom > self.rect.top and self.player.rect.bottom < self.rect.bottom:
+      if not self.is_breakable and self.is_collide_with_player():
         self.player.start_jump()
     
     if self.player.rect.top < HEIGHT/2 and not self.is_scrolling_down and not self.player.is_falling:
@@ -33,6 +36,10 @@ class Platform(pygame.sprite.Sprite):
       self.scroll_up()
     
     self.move_x()
+    self.break_down()
+  
+  def is_collide_with_player(self):
+    return len(pygame.sprite.spritecollide(self.player, [self], False)) and self.player.rect.right > self.rect.left and self.player.rect.left < self.rect.right and self.player.rect.bottom > self.rect.top and self.player.rect.bottom < self.rect.bottom
 
   def start_scroll_down(self):
     self.player.is_stop = True
@@ -65,6 +72,9 @@ class Platform(pygame.sprite.Sprite):
   
   def move_x(self):
     pass
+  
+  def break_down(self):
+    pass
 
 
 class GreenPlatform(Platform):
@@ -93,6 +103,39 @@ class BluePlatform(Platform):
         self.current_speed_x = self.default_speed_x
       else:
         self.rect.left += self.current_speed_x
+
+
+class BreakingPlatform(Platform):
+  def __init__(self, x, y, player):
+    Platform.__init__(self, x, y, player)
+    self.image = platform_break1_img
+    self.is_broke = False
+    self.anim_state = 1
+    self.time_count = 0
+    self.is_breakable = True
+  
+  def break_down(self):
+    if self.is_broke:
+      self.time_count += 1
+      self.rect.bottom += 7
+    else:
+      if self.player.is_falling and self.is_collide_with_player():
+        break_sound.play()
+        self.is_broke = True
+    
+    if self.time_count >= 3:
+      self.animate()
+      self.time_count = 0
+  
+  def animate(self):
+    if self.anim_state == 2:
+      self.image = platform_break2_img
+    elif self.anim_state == 3:
+      self.image = platform_break3_img
+    elif self.anim_state == 4:
+      self.image = platform_break4_img
+    self.anim_state += 1
+  
 
 
 class Platforms(pygame.sprite.Sprite):
@@ -135,10 +178,26 @@ class Platforms(pygame.sprite.Sprite):
       x = random.randint(0, WIDTH - platform_size[0])
       y = current_h - random.randint(35, self.player.rect.height*3)
       current_h = y
-      if random.random() > 0.4: 
+      if random.random() > 0.3: 
         platform = GreenPlatform(x, y, self.player)
       else:
         platform = BluePlatform(x, y, self.player)
+      
+      if random.random() < 0.3 :
+        if x > platform_size[0]:
+          if (x + 2*platform_size[0]) < WIDTH:
+            if random.random() > 0.5:
+              break_x = random.uniform(x + platform_size[0], WIDTH - platform_size[0])
+            else:
+              break_x = random.uniform(0, x - platform_size[0])
+          else:
+            break_x = random.uniform(0, x - platform_size[0])
+        else:
+          break_x = random.uniform(x + platform_size[0], WIDTH - platform_size[0])
+        
+        breaking_platrofm = BreakingPlatform(break_x, y, self.player)
+        self.platforms.append(breaking_platrofm)
+      
       self.platforms.append(platform)
   
   def play_again(self):
