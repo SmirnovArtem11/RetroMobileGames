@@ -25,4 +25,4 @@ class Menu(pygame.sprite.Sprite):
     x, y = mouse_pos
     if y < self.rect_play.bottom and y > self.rect_play.top and x < self.rect_play.right and x > self.rect_play.left:
       self.screen_manager.start_game()
-    
+  

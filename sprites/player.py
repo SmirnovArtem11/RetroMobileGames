@@ -18,7 +18,6 @@ class Player(pygame.sprite.Sprite):
     self.rect.centerx = WIDTH / 2
     self.rect.bottom = HEIGHT
     
-    self.default_speed_x = 8;
     self.speed_x = 0;
     self.is_right = True
     self.acceleration_x = 0.3
@@ -48,6 +47,9 @@ class Player(pygame.sprite.Sprite):
         self.scroll_up()
       else: 
         self.fall()
+  
+  def draw(self, screen):
+    screen.blit(self.image, self.rect)
   
   def start_accelerating_x(self, is_right):
     self.is_accelerating_x = True

@@ -3,8 +3,6 @@ import pygame
 from settings import *
 from img.images import *
 
-font_name = "./fonts/DoodleJump.ttf"
-
 class Score(pygame.sprite.Sprite):
   def __init__(self, player, lowest_platform):
     pygame.sprite.Sprite.__init__(self)
@@ -38,11 +36,14 @@ class Score(pygame.sprite.Sprite):
       self.max_distance = distance
   
   def draw(self, screen):
+    screen.blit(self.image, self.rect)
+    
     font = pygame.font.Font(font_name, 40)
     text_surface = font.render(str(self.score), True, (0, 0, 0))
     text_rect = text_surface.get_rect()
     text_rect.topleft = (20, -5)
     screen.blit(text_surface, text_rect)
+    
   
   def end_game(self):
     self.is_loose = True

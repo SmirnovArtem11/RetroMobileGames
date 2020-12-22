@@ -84,6 +84,15 @@ platform_img = pygame.transform.scale(
   (int(WIDTH/6), int(int(WIDTH/6)/platform_size[0]*platform_size[1]) + 3)
 )
 
+platform_blue_size = Image.open(os.path.join(img_folder, 'platform_blue.png')).size
+
+platform_blue_img = pygame.transform.scale(
+  pygame.image.load(
+    os.path.join(img_folder, 'platform_blue.png')
+    ), 
+  (int(WIDTH/6), int(int(WIDTH/6)/platform_blue_size[0]*platform_blue_size[1]))
+)
+
 
 play_again_size = Image.open(os.path.join(img_folder, 'play_again.png')).size
 
@@ -110,4 +119,13 @@ play_img = pygame.transform.scale(
     os.path.join(img_folder, 'play.png')
     ), 
   (int(WIDTH/3), int(int(WIDTH/3)/play_size[0]*play_size[1]))
+)
+
+menu_size = Image.open(os.path.join(img_folder, 'menu.png')).size
+
+menu_img = pygame.transform.scale(
+  pygame.image.load(
+    os.path.join(img_folder, 'menu.png')
+    ), 
+  (int(WIDTH/3), int(int(WIDTH/3)/menu_size[0]*menu_size[1]))
 )

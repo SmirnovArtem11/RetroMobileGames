@@ -29,10 +29,8 @@ loose_screen = LooseScreen(player)
 
 for platform in platforms.platforms:
   all_sprites.add(platform)
-all_sprites.add(score)
-all_sprites.add(player)
 
-screen_manager = ScreenManager() 
+screen_manager = ScreenManager(platforms, player, score, loose_screen) 
 menu = Menu(screen_manager)
 
 def handle_events():
@@ -53,7 +51,9 @@ def handle_events():
           player.start_accelerating_x(True)
 
       if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-        loose_screen.on_click(event.pos)
+        is_go_to_menu = loose_screen.on_click(event.pos)
+        if is_go_to_menu:
+          screen_manager.end_game()
 
       if event.type == JUMPEVENT:
         player.un_squeeze()
@@ -69,6 +69,7 @@ def draw():
   if screen_manager.is_game_start:
     loose_screen.draw(screen)
     all_sprites.draw(screen)
+    player.draw(screen)
     score.draw(screen)
   else:
     menu.draw(screen)
@@ -83,6 +84,8 @@ def update():
     all_sprites.update()
     platforms.update()
     loose_screen.update()
+    player.update()
+    score.update()
 
     all_sprites = platforms.append_new_platforms(all_sprites)
 
